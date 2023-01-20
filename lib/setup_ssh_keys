@@ -7,8 +7,6 @@ env_dir = ARGV[0]
 env_vars = Dir.entries(env_dir).reject{ |filename| ['.','..'].include?(filename) }
 ssh_keys = env_vars.filter{ |var| var.start_with?('GITHUB_DEPLOY_KEY') }
 
-puts "Setting up SSH keys"
-
 ssh_keys.each do |name|
   File.open "#{ssh_dir}/#{name}", 'w' do |f|
     f.write File.read("#{env_dir}/#{name}")
