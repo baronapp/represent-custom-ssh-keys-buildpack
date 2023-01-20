@@ -10,7 +10,7 @@ puts "Setting up SSH keys"
 
 ssh_keys.each do |name|
   File.open "#{ssh_dir}/#{name}", 'w' do |f|
-    f.write File.read("#{ARGV[2]}/#{name}")
+    f.write File.read("#{ARGV[0]}/#{name}")
   end
   FileUtils.chmod 0600, "#{ssh_dir}/#{name}"
 end
