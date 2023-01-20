@@ -3,13 +3,14 @@
 require 'fileutils'
 
 ssh_dir = File.expand_path "~/.ssh"
-ssh_keys = ENV.filter{ |var| var.start_with?('GITHUB_DEPLOY_KEY') }
+env_vars = Dir.entries(ARGV[2]).reject{ |filename| ['.','..'].include?(filename) }
+ssh_keys = env_vars.filter{ |var| var.start_with?('GITHUB_DEPLOY_KEY') }
 
 puts "Setting up SSH keys"
-puts ENV['GITHUB_DEPLOY_KEY_1']
-ssh_keys.each do |name, value|
+
+ssh_keys.each do |name|
   File.open "#{ssh_dir}/#{name}", 'w' do |f|
-    f.write value
+    f.write File.read("#{ARGV[2]}/#{name}")
   end
   FileUtils.chmod 0600, "#{ssh_dir}/#{name}"
 end
