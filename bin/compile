@@ -16,7 +16,9 @@ chmod 700 ~/.ssh
 cp ./lib/ssh_command ~/ssh_command
 eval `ssh-agent -s`
 ssh-add ~/.ssh/*
-export GIT_SSH_COMMAND="~/ssh_command"
+
+# use custom ssh command
+git config --global core.sshCommand "~/ssh_command"
 
 # ignore/hide ssh warnings
 echo "Host *" >> ~/.ssh/config
