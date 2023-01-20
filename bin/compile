@@ -22,7 +22,7 @@ echo "   UserKnownHostsFile /dev/null" >> ~/.ssh/config
 echo "   LogLevel ERROR" >> ~/.ssh/config
 
 # setup ssh keys
-./lib/setup_ssh_key
+./lib/setup_ssh_key $ENV_DIR
 cp ./lib/ssh_command ~/ssh_command
 ls -al ~/.ssh/
 cat ~/.ssh/GITHUB_DEPLOY_KEY_1
