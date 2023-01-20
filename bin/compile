@@ -5,7 +5,7 @@ require 'pathname'
 require 'tmpdir'
 require 'ipaddr'
 
-build_dir    = ARGV[0]
+build_dir    = '/build'
 profile_dir  = File.expand_path "#{build_dir}/.profile.d"
 ssh_dir      = File.expand_path "#{build_dir}/.ssh"
 
@@ -28,6 +28,7 @@ FileUtils.cp("#{File.dirname(__FILE__)}/../lib/setup_ssh_key", build_dir)
 FileUtils.cp("#{File.dirname(__FILE__)}/../lib/ssh_command", build_dir)
 
 FileUtils.chmod 0755, "#{build_dir}/setup_ssh_key"
+FileUtils.chmod 0755, "#{build_dir}/ssh_command"
 
 File.open "#{profile_dir}/launch_ssh_agent.sh", 'w' do |f|
   f.puts """
@@ -35,6 +36,7 @@ File.open "#{profile_dir}/launch_ssh_agent.sh", 'w' do |f|
 ~/setup_ssh_key
 eval `sudo -u herokuishuser ssh-agent -s`
 ssh-add ~/.ssh/*
+export GIT_SSH_COMMAND=~/ssh_command
 """
 end
 arrow "Wrote launch script for ssh-agent"
