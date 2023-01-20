@@ -3,7 +3,7 @@
 require 'fileutils'
 
 ssh_dir = File.expand_path "~/.ssh"
-env_vars = Dir.entries(ARGV[1]).reject{ |filename| ['.','..'].include?(filename) }
+env_vars = Dir.entries(ARGV[0]).reject{ |filename| ['.','..'].include?(filename) }
 ssh_keys = env_vars.filter{ |var| var.start_with?('GITHUB_DEPLOY_KEY') }
 
 puts "Setting up SSH keys"
