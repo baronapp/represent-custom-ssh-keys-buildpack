@@ -6,8 +6,6 @@ require 'tmpdir'
 require 'ipaddr'
 
 build_dir    = ARGV[0]
-cache_dir    = ARGV[1]
-env_dir      = ARGV[2]
 profile_dir  = File.expand_path "#{build_dir}/.profile.d"
 ssh_dir      = File.expand_path "#{build_dir}/.ssh"
 
@@ -27,6 +25,7 @@ Dir.mkdir(ssh_dir, 0700) unless File.exists?(ssh_dir)
 Dir.mkdir(profile_dir, 0700) unless File.exists?(profile_dir)
 
 FileUtils.cp("#{File.dirname(__FILE__)}/../lib/setup_ssh_key", build_dir)
+FileUtils.cp("#{File.dirname(__FILE__)}/../lib/ssh_command", build_dir)
 
 FileUtils.chmod 0755, "#{build_dir}/setup_ssh_key"
 

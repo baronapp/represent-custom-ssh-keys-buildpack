@@ -1,0 +1,13 @@
+#!/usr/bin/env ruby
+
+require 'fileutils'
+
+ssh_dir = File.expand_path "~/.ssh"
+ssh_keys = ENV.filter{ |var| var.start_with?('GITHUB_DEPLOY_KEY') }
+
+ssh_keys.each do |name, value|
+  File.open "#{ssh_dir}/#{name}", 'w' do |f|
+    f.write value
+  end
+  FileUtils.chmod 0600, "#{ssh_dir}/#{name}"
+end
