@@ -15,15 +15,15 @@ ENV_DIR=$3
 mkdir -p ~/.ssh
 chmod 700 ~/.ssh
 
-# ignore/hide ssh warnings
-echo "Host *" >> ~/.ssh/config
-echo "   StrictHostKeyChecking no" >> ~/.ssh/config
-echo "   UserKnownHostsFile /dev/null" >> ~/.ssh/config
-echo "   LogLevel ERROR" >> ~/.ssh/config
-
 # setup ssh keys
 ./lib/setup_ssh_keys $ENV_DIR
 cp ./lib/ssh_command ~/ssh_command
 eval `ssh-agent -s`
 ssh-add ~/.ssh/*
 export GIT_SSH_COMMAND="~/ssh_command"
+
+# ignore/hide ssh warnings
+echo "Host *" >> ~/.ssh/config
+echo "   StrictHostKeyChecking no" >> ~/.ssh/config
+echo "   UserKnownHostsFile /dev/null" >> ~/.ssh/config
+echo "   LogLevel ERROR" >> ~/.ssh/config
