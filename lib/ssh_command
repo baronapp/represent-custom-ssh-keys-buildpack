@@ -4,7 +4,7 @@
 # We need ssh-agent to be running
 # if we can't find an agent, start one, and restart the script.
 if [ -z "$SSH_AUTH_SOCK" ] ; then
-  exec ssh-agent bash -c "ssh-add ~/.ssh/* ; $0"
+  exec ssh-agent bash -c "ssh-add ~/.ssh/GITHUB_DEPLOY_KEY* ; $@"
   exit
 fi
 
