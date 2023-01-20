@@ -24,6 +24,7 @@ echo "   LogLevel ERROR" >> ~/.ssh/config
 # setup ssh keys
 ./lib/setup_ssh_key
 cp ./lib/ssh_command ~/ssh_command
+ls -al ~/.ssh/
 ssh-agent -s
 ssh-add ~/.ssh/*
 export GIT_SSH_COMMAND="~/ssh_command"
