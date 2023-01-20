@@ -22,8 +22,8 @@ echo "   UserKnownHostsFile /dev/null" >> ~/.ssh/config
 echo "   LogLevel ERROR" >> ~/.ssh/config
 
 # setup ssh keys
-./lib/setup_ssh_key $ENV_DIR
+./lib/setup_ssh_keys $ENV_DIR
 cp ./lib/ssh_command ~/ssh_command
-ssh-agent -s
+eval `ssh-agent -s`
 ssh-add ~/.ssh/*
 export GIT_SSH_COMMAND="~/ssh_command"
