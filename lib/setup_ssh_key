@@ -5,6 +5,7 @@ require 'fileutils'
 ssh_dir = File.expand_path "~/.ssh"
 ssh_keys = ENV.filter{ |var| var.start_with?('GITHUB_DEPLOY_KEY') }
 
+puts "Setting up SSH keys"
 ssh_keys.each do |name, value|
   File.open "#{ssh_dir}/#{name}", 'w' do |f|
     f.write value
