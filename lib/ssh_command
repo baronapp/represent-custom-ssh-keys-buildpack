@@ -21,10 +21,10 @@ eval last=$last
 
 # Try to pick the right key
 if [[ $(ssh-add -L | grep $last | wc -l) -ne 0 ]]; then
-    ssh-add -L | grep $last > $key_file
-    chmod 600 $key_file
+  ssh-add -L | grep $last > $key_file
+  chmod 600 $key_file
 
-    ssh -i $key_file "$@"
+  ssh -i $key_file "$@"
 else
-    ssh "$@"
+  ssh "$@"
 fi
