@@ -10,6 +10,9 @@ ssh_keys = env_vars.filter{ |var| var.start_with?('GITHUB_DEPLOY_KEY') }
 puts "Setting up SSH keys"
 
 ssh_keys.each do |name|
-  FileUtils.cp("#{env_dir}/#{name}", "#{ssh_dir}/#{name}")
+  File.open "#{ssh_dir}/#{name}", 'w' do |f|
+    f.write File.read("#{env_dir}/#{name}")
+    f.write "\n"
+  end
   FileUtils.chmod 0600, "#{ssh_dir}/#{name}"
 end
