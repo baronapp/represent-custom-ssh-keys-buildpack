@@ -1,42 +1,29 @@
-#!/usr/bin/env ruby
+#!/bin/bash
 
-require 'fileutils'
-require 'pathname'
-require 'tmpdir'
-require 'ipaddr'
+set -e
 
-build_dir    = ARGV[0]
-profile_dir  = File.expand_path "#{build_dir}/.profile.d"
-ssh_dir      = File.expand_path "#{build_dir}/.ssh"
+indent() {
+  sed -u 's/^/       /'
+}
 
-def arrow(str)
-  str.split("\n").each do |line|
-    puts ":::::> #{line}"
-  end
-end
+echo "-----> Install represent-custom-ssh-key-buildpacks"
 
-arrow "############################################"
-arrow "         Custom SSH keys buildpack          "
-arrow "############################################"
+BUILD_DIR=$1
+VENDOR_DIR="$BUILD_DIR/vendor"
+ENV_DIR=$3
 
-# Create the ssh directory on the server
-Dir.mkdir(ssh_dir, 0700) unless File.exists?(ssh_dir)
-# Make the profile.d dir for scripts to run at dyno start time and add a script for launching ssh-agent
-Dir.mkdir(profile_dir, 0700) unless File.exists?(profile_dir)
+mkdir -p ~/.ssh
+chmod 700 ~/.ssh
 
-FileUtils.cp("#{File.dirname(__FILE__)}/../lib/setup_ssh_key", build_dir)
-FileUtils.cp("#{File.dirname(__FILE__)}/../lib/ssh_command", build_dir)
+# ignore/hide ssh warnings
+echo "Host *" >> ~/.ssh/config
+echo "   StrictHostKeyChecking no" >> ~/.ssh/config
+echo "   UserKnownHostsFile /dev/null" >> ~/.ssh/config
+echo "   LogLevel ERROR" >> ~/.ssh/config
 
-FileUtils.chmod 0755, "#{build_dir}/setup_ssh_key"
-FileUtils.chmod 0755, "#{build_dir}/ssh_command"
-
-File.open "#{profile_dir}/launch_ssh_agent.sh", 'w' do |f|
-  f.puts """
-#!/usr/bin/env bash
-~/setup_ssh_key
-eval `sudo -u herokuishuser ssh-agent -s`
+# setup ssh key
+../lib/setup_ssh_key
+cp ../lib/ssh_command ~/ssh_command
+ssh-agent -s
 ssh-add ~/.ssh/*
-export GIT_SSH_COMMAND=~/ssh_command
-"""
-end
-arrow "Wrote launch script for ssh-agent"
+export GIT_SSH_COMMAND="~/ssh_command"
