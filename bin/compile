@@ -14,8 +14,6 @@ chmod 700 ~/.ssh
 # setup ssh keys
 ./lib/setup_ssh_keys $ENV_DIR
 cp ./lib/ssh_command ~/ssh_command
-eval `ssh-agent -s`
-ssh-add ~/.ssh/*
 
 # use custom ssh command
 git config --global core.sshCommand "~/ssh_command"

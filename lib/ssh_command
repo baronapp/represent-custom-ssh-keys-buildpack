@@ -1,6 +1,12 @@
 #!/bin/bash
 # Source: https://www.webfactory.de/blog/using-multiple-ssh-deploy-keys-with-github
+
 # We need ssh-agent to be running
+# if we can't find an agent, start one, and restart the script.
+if [ -z "$SSH_AUTH_SOCK" ] ; then
+  exec ssh-agent bash -c "ssh-add ~/.ssh/* ; $0"
+  exit
+fi
 
 # The last argument is the command to be executed on the remote end, which is something
 # like "git-upload-pack 'repo_user/repo_name.git'". We need the repo path only, so we
